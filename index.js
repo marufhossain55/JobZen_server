@@ -31,7 +31,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     const jobsCollection = client.db('jobZen').collection('jobs');
-    //get all jobs data from db
+    //get all jobs data from db----->
     app.get('/jobs', async (req, res) => {
       const result = await jobsCollection.find().toArray();
       res.send(result);
