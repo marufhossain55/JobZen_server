@@ -3,7 +3,7 @@ const cors = require('cors');
 const app = express();
 require('dotenv').config();
 const port = process.env.PORT || 5000;
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 // middleware
 
 const corsOptions = {
@@ -31,13 +31,22 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     const jobsCollection = client.db('jobZen').collection('jobs');
+
     //get all jobs data from db----->
     app.get('/jobs', async (req, res) => {
       const result = await jobsCollection.find().toArray();
       res.send(result);
     });
     //<------------->
+    // <------ get single job from db using job id------->
+    app.get('/job/:id', async (req, res) => {
+      const id = req.params.id;
+      query = { _id: new ObjectId(id) };
+      const result = await jobsCollection.findOne(query);
+      res.send(result);
+    });
 
+    //<----------------->
     // Connect the client to the server	(optional starting in v4.7)
     // await client.connect();
     // Send a ping to confirm a successful connection
