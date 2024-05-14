@@ -45,7 +45,23 @@ async function run() {
       const result = await jobsCollection.findOne(query);
       res.send(result);
     });
+    //<------ add jobs------->
+    app.post('/addAJob', async (req, res) => {
+      const addPostData = req.body;
+      console.log(addPostData);
+      const result = await jobsCollection.insertOne(addPostData);
+      res.send(result);
+    });
 
+    //<-----get all jobs posted by specific user-------->
+    app.get('/postedJob/:email', async (req, res) => {
+      const email = req.params.email;
+      console.log(email);
+      const query = { Contact_Email: email };
+      const result = await jobsCollection.find(query).toArray();
+      res.send(result);
+    });
+    //<----------------->
     //<----------------->
     // Connect the client to the server	(optional starting in v4.7)
     // await client.connect();
