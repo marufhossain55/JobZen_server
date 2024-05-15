@@ -9,11 +9,11 @@ const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 // middleware
 const corsOptions = {
-  // origin: ['http://localhost:5173', 'http://localhost:5174'],
-  origin: [
-    'https://jobzen-15e8e.web.app',
-    'https://jobzen-15e8e.firebaseapp.com',
-  ],
+  origin: ['http://localhost:5173', 'http://localhost:5174'],
+  // origin: [
+  //   'https://jobzen-15e8e.web.app',
+  //   'https://jobzen-15e8e.firebaseapp.com',
+  // ],
   credentials: true,
   optionSuccessStatus: 200,
 };
@@ -73,7 +73,7 @@ async function run() {
     //<------ add jobs------->
     app.post('/addAJob', async (req, res) => {
       const addPostData = req.body;
-      console.log(addPostData);
+      // console.log(addPostData);
       const result = await jobsCollection.insertOne(addPostData);
       res.send(result);
     });
@@ -86,15 +86,23 @@ async function run() {
       if (userEmail !== email) {
         return res.status(403).send({ message: 'forbidden access' });
       }
+    //<-----get applied posted by specific user-------->
+    app.get('/appliedJob/:email', verifyToken, async (req, res) => {
+      const userEmail = req.user.email;
+      const email = req.params.email;
+      if (userEmail !== email) {
+        return res.status(403).send({ message: 'forbidden access' });
+      }
+      //------------------------------------------------------------------------//
       // console.log(email);
       const query = { Contact_Email: email };
       const result = await jobsCollection.find(query).toArray();
       res.send(result);
     });
     //<---------update specific data-------->
-    app.put('/postedJob/:id', async (req, res) => {
+    app.put('/postedJobEdit/:id', async (req, res) => {
       const id = req.params.id;
-      console.log(id);
+      console.log('sadkjaskldj', id);
       const jobData = req.body;
       query = { _id: new ObjectId(id) };
       const options = { upsert: true };
