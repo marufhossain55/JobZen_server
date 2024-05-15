@@ -9,14 +9,18 @@ const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 // middleware
 const corsOptions = {
-  origin: ['http://localhost:5173', 'http://localhost:5174'],
+  // origin: ['http://localhost:5173', 'http://localhost:5174'],
+  origin: [
+    'https://jobzen-15e8e.web.app',
+    'https://jobzen-15e8e.firebaseapp.com',
+  ],
   credentials: true,
   optionSuccessStatus: 200,
 };
 //-------token validate middlewares----------->
 const verifyToken = (req, res, next) => {
   const token = req.cookies.token;
-  console.log('tokennnnn', token);
+  // console.log('tokennnnn', token);
   if (!token) {
     return res.status(401).send({ message: 'unauthorized access' });
   }
