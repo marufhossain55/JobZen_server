@@ -77,7 +77,7 @@ async function run() {
     //<-----get all jobs posted by specific user-------->
     app.get('/postedJob/:email', verifyToken, async (req, res) => {
       const userEmail = req.user.email;
-      console.log('ashdjlkashda', userEmail);
+      // console.log('ashdjlkashda', userEmail);
       const email = req.params.email;
       if (userEmail !== email) {
         return res.status(403).send({ message: 'forbidden access' });
